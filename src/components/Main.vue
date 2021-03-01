@@ -1,9 +1,9 @@
 <template>
   <div>
     <q-toolbar class="bg-primary text-white">
-      <q-toolbar-title> 개미집 </q-toolbar-title>
-      <q-btn flat round dense icon="create" id="create" />
-      <q-btn flat round dense icon="search" id="search" />
+      <q-toolbar-title> 주식토론방 </q-toolbar-title>
+      <q-btn @click='navigateToCreate' flat round dense icon="create" id="main-create" />
+      <q-btn @click='navigateToSearch' flat round dense icon="search" id="main-search" />
     </q-toolbar>
     <q-tabs
       v-model="tab"
@@ -12,10 +12,10 @@
       mobile-arrows
       class="text-black shadow-2"
     >
-      <q-tab name="hit" label="인기" />
-      <q-tab name="latest" label="최신" />
+      <q-tab @click='tabToHit' name="hit" label="인기" />
+      <q-tab @click='tabToLatest' name="latest" label="최신" />
     </q-tabs>
-    <post-item v-for="(item, index) in items" :item=item :key=index></post-item> 
+    <post-item v-on:on-item-selected='viewPost' v-for="(item, index) in items" :item=item :key=index></post-item> 
   </div>
 </template>
 
@@ -30,6 +30,7 @@ export default {
   name: "Main",
   data : function(){
     return {
+      tab : 0,
       tabPosition : 0,
       items : [
         {
@@ -68,6 +69,27 @@ export default {
         
       ]
     }
+  },
+  methods:{
+    navigateToCreate : function(){
+      this.$router.push('/post/')
+    },
+    navigateToSearch : function(){
+      this.$router.push('/search/')
+    },
+    viewPost : function(id){
+      console.log('viewPost handled!'+ id)
+      this.$router.push('/postview/'+id)
+    },
+    tabToHit : function(){
+      this.tabPosition = 0
+    },
+    tabToLatest : function(){
+      this.tabPosition = 1
+    }
+  },
+  destroyed: function(){
+    console.log("Main destroyed!")
   }
 };
 </script>

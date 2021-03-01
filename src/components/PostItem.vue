@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-card class="my-card" flat bordered>
+    <q-card @click='onItemSelected' class="my-card" flat bordered>
         <q-card-section horizontal>
             <tags :tags='item.tags'></tags>
         </q-card-section>
@@ -55,6 +55,12 @@ export default {
   props : ['item'],
   components: {
       Tags
+  },
+  methods:{
+    onItemSelected : function(){
+      this.$emit('on-item-selected', this.item.title)
+      console.log("item selected!")
+    }
   }
 };
 </script>
