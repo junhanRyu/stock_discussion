@@ -3,8 +3,10 @@ import App from './App.vue'
 import VueRouter from "vue-router";
 import './quasar'
 import routes from './routes.js'
+import axios from 'axios'
 
 Vue.config.productionTip = false
+Vue.prototype.$axios = axios;
 Vue.use(VueRouter)
 
 const router = new VueRouter({
