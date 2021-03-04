@@ -20,7 +20,7 @@
       />
     </q-toolbar>
     <q-tabs
-      v-model="tab"
+      v-model="tabType"
       no-caps
       outside-arrows
       mobile-arrows
@@ -31,9 +31,9 @@
     </q-tabs>
     <post-item
       v-on:on-item-selected="viewPost"
-      v-for="(item, index) in items"
-      :item="item"
-      :key="index"
+      v-for="(item) in posts"
+      :post="item"
+      :key="item.id"
     ></post-item>
   </div>
 </template>
@@ -54,53 +54,18 @@ export default {
       posts: [],
       pageIndicator: 0,
       tabPosition: 0,
-      items: [
-        {
-          title: "test1",
-          description: "test1",
-          thumbnail: "",
-          like: 1,
-          dislike: 0,
-          time: "지금",
-          views: 10,
-          comments: 10,
-          tags: ["tag1", "tag2", "tag3"],
-        },
-        {
-          title: "test2",
-          description: "test2",
-          thumbnail: "",
-          like: 1,
-          dislike: 0,
-          time: "3시간 전",
-          views: 10,
-          comments: 10,
-          tags: ["tag1"],
-        },
-        {
-          title: "test3",
-          description: "test3",
-          thumbnail: "",
-          like: 1,
-          dislike: 0,
-          time: "1일 전",
-          views: 10,
-          comments: 10,
-          tags: ["tag1", "tag2"],
-        },
-      ],
     };
   },
   methods: {
     addPost: function () {
       console.log("addpost");
-      this.page = this.page + 1;
+      this.pageIndicator = this.pageIndicator + 1;
       this.$axios
-        .get("https://virtserver.swaggerhub.com/maru536/Stock/1.0.0/posts", {
-          params: { type: this.tabType, page: this.pageIndicator },
-          headers: { "Content-Type": "application/json" },
+        .get("https://asia-northeast3-stock-grounds.cloudfunctions.net/posts", {
+          params: { type: this.tabType, page: this.pageIndicator }
         })
         .then((res) => {
+          this.posts = [...this.posts, ...res.data];
           console.log(res.data);
         });
     },
@@ -112,20 +77,21 @@ export default {
     },
     viewPost: function (id) {
       console.log("viewPost handled!" + id);
-      this.$router.push("/postview/" + id);
+      this.$router.push("/post/view/" + id);
     },
     tabToHit: function () {
-      this.tabPosition = 0;
+      this.tabType = "hit";
+      this.posts = [];
+      this.addPost()
     },
     tabToLatest: function () {
-      this.tabPosition = 1;
+      this.tabType = "latest";
+      this.posts = [];
+      this.addPost()
     },
   },
-  mounted: function () {
-    this.$nextTick(function () {
-      // 모든 화면이 렌더링된 후 실행합니다.
-      this.addPost()
-    });
+  created: function () {
+    this.addPost();
   },
   destroyed: function () {
     console.log("Main destroyed!");

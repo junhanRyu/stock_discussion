@@ -7,7 +7,6 @@
         round
         dense
         icon="arrow_back"
-        id="post-view-back"
       />
       <q-btn
         @click="navigateToEdit"
@@ -15,7 +14,6 @@
         round
         dense
         icon="edit"
-        id="post-view-edit"
       />
       <q-btn
         @click="deletePost"
@@ -23,50 +21,49 @@
         round
         dense
         icon="delete_forever"
-        id="post-view-delete"
       />
     </q-toolbar>
 
-    <div id="tags">
-      <tags :tags="tags"></tags>
+    <div>
+      <tags :tags="post.tag"></tags>
     </div>
-    <div id="title" style="font-size: 2em" class="q-ma-sm">{{ title }}</div>
-    <div id="indicators" class="q-ma-sm">
+    <div style="font-size: 2em" class="q-ma-sm">{{ post.title }}</div>
+    <div class="q-ma-sm">
       <span class="text-black">
         <q-icon name="schedule" style="font-size: 2em" />
-        {{ time }}
+        {{ post.createTime }}
       </span>
       <span class="text-black">
         <q-icon name="visibility" style="font-size: 2em" />
-        {{ views }}
+        {{ post.view }}
       </span>
     </div>
     <div id="image" class="q-ma-lg">
-      <q-img class="borders" :src="image_url" />
+      <!-- <q-img class="borders" :src="asd" /> -->
     </div>
-    <div id="contents" class="q-ma-sm" style="font-size: 1.5em">
-      {{ contents }}
+    <div class="q-ma-sm" style="font-size: 1.5em">
+      {{ post.content }}
     </div>
-    <div id="actions">
+    <div>
       <q-btn flat icon="thumb_up">
-        {{ likes }}
+        {{ post.like[0] }}
       </q-btn>
       <q-btn flat icon="thumb_down">
-        {{ dislikes }}
+        {{ post.like[1] }}
       </q-btn>
       <q-btn flat icon="comment">
-        {{ comments_size }}
+        {{ post.commentCount }}
       </q-btn>
     </div>
 
     <div id="comment-editor"></div>
 
-    <div id="comment_list">
-      <comment-item
+    <div>
+      <!-- <comment-item
         v-for="(value, index) in comments_values"
         :key="index"
         :comment=value
-      ></comment-item>
+      ></comment-item> -->
     </div>
   </div>
 </template>
@@ -76,41 +73,50 @@
 
 <script>
 import Tags from "./Tags.vue";
-import CommentItem from "./CommentItem.vue";
+/* import CommentItem from "./CommentItem.vue"; */
 
 export default {
   props: ["id"],
   name: "PostView",
   components: {
     Tags,
-    CommentItem,
+    /* CommentItem, */
   },
   methods: {
+    getPost : function () {
+      this.$axios
+        .get("https://asia-northeast3-stock-grounds.cloudfunctions.net/post", {
+          params: { id: this.$route.params.id }
+        })
+        .then((res) => {
+          this.post = res.data;
+          console.log(res.data);
+        });
+    },
     goBack: function () {
       this.$router.go(-1);
     },
     navigateToEdit: function () {
-      this.$router.push("/postedit/" + this.$route.params.id);
+      this.$router.push("/post/edit/" + this.$route.params.id);
     },
     deletePost: function () {},
   },
   data: function () {
     return {
-      title: "여기는 제목",
-      contents: "주식토론방 커뮤니티 테스트 글",
-      time: new Date(),
-      views: 123,
-      image_url: "https://cdn.quasar.dev/img/parallax2.jpg",
-      likes: 0,
-      dislikes: 0,
-      comments_size: 0,
-      comments_values: [
-        { nickname: "형훈", contents: "안녕 얘들아" },
-        { nickname: "동철", contents: "안녕하세요 형훈이형" },
-        { nickname: "준한", contents: "ㅎㅎㅎㅎㅎㅎㅎㅎㅎ" },
-      ],
-      tags: ["tag1", "tag2"],
+      post : {
+        content:"",
+        title:"",
+        tag:[],
+        createTime:"",
+        like:[0,0],
+        commentCount:0,
+        view:0,
+      }
     };
   },
+  created: function(){
+    console.log(this.$route.params.id)
+    this.getPost();
+  }
 };
 </script>

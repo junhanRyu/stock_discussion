@@ -1,14 +1,14 @@
 <template>
   <div>
-    <q-card @click='onItemSelected' class="my-card" flat bordered>
-        <q-card-section horizontal>
-            <tags :tags='item.tags'></tags>
-        </q-card-section>
+    <q-card @click="onSelected" class="my-card" flat bordered>
+      <q-card-section horizontal>
+        <tags :tags="post.tag"></tags>
+      </q-card-section>
       <q-card-section horizontal>
         <q-card-section class="q-pt-xs col-8">
-          <div class="text-h5 q-mt-sm q-mb-xs">{{item.title}}</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">{{ post.title }}</div>
           <div class="text-caption text-grey">
-            {{item.description}}
+            {{ post.content }}
           </div>
         </q-card-section>
 
@@ -20,22 +20,21 @@
         </q-card-section>
       </q-card-section>
 
-
       <q-card-actions class="row justify-end">
         <q-btn flat icon="thumb_up">
-          {{item.like}}
+          {{ post.like[0] }}
         </q-btn>
         <q-btn flat icon="thumb_down">
-          {{item.dislike}}
+          {{ post.like[1] }}
         </q-btn>
         <q-btn flat icon="schedule">
-          {{item.time}}
+          {{ post.createTime }}
         </q-btn>
         <q-btn flat icon="visibility">
-          {{item.views}}
+          {{ post.view }}
         </q-btn>
         <q-btn flat icon="comment">
-          {{item.comments}}
+          {{ post.commentCount }}
         </q-btn>
       </q-card-actions>
     </q-card>
@@ -46,20 +45,23 @@
 </style>
 
 <script>
-
 import Tags from "./Tags.vue";
 
 export default {
   name: "PostItem",
-  props : ['item'],
+  props: ["post"],
   components: {
-      Tags
+    Tags,
   },
-  methods:{
-    onItemSelected : function(){
-      this.$emit('on-item-selected', this.item.title)
-      console.log("item selected!")
-    }
-  }
+  data: function () {
+    return {
+    };
+  },
+  methods: {
+    onSelected: function () {
+      this.$emit("on-item-selected", this.post.id);
+      console.log("item selected!");
+    },
+  },
 };
 </script>

@@ -16,10 +16,5 @@ const router = new VueRouter({
 new Vue({
   router,
   render: h => h(App),
-  mounted: function () {
-    this.$nextTick(function () {
-      this.$router.push('/main')
-    })
-  }
 }).$mount('#app')
 
