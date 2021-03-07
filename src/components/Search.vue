@@ -1,7 +1,15 @@
 <template>
   <div>
     <q-toolbar class="bg-primary text-white">
-      <q-btn @click='goBack' flat round dense icon="arrow_back" id="search-back" />
+      <q-btn
+        @click="goBack"
+        flat
+        round
+        dense
+        icon="arrow_back"
+        id="search-back"
+      />
+      <q-space />
       <q-input
         dark
         dense
@@ -30,7 +38,7 @@
     >
       <q-tab name="hit" label="인기" />
       <q-tab name="latest" label="태그" />
-      <q-tab name="latest" label="키워드" />
+      <q-tab name="keyword" label="키워드" />
     </q-tabs>
   </div>
 </template>
@@ -41,16 +49,16 @@
 <script>
 export default {
   name: "Search",
-  data: function(){
+  data: function () {
     return {
-      text : "",
-      tab : 0,
-    }
+      text: "",
+      tab: 0,
+    };
   },
-  methods:{
-    goBack:function(){
-      this.$router.go(-1)
-    }
-  }
+  methods: {
+    goBack: function () {
+      this.$router.go(-1);
+    },
+  },
 };
 </script>

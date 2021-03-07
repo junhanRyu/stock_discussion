@@ -11,7 +11,7 @@ const routes = [
     { path: "/post/view/:id", component: PostView },
     { path: "/post/edit/:id", component: PostEdit },
     { path: "/search", component: Search },
-    { path: "/notfound", component: NotFound },
+    { path: "/notfound/:status", name:"notfound", component: NotFound },
   ];
 
 export default routes;

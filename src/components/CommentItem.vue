@@ -1,28 +1,31 @@
 <template>
   <div>
-    <div id="top_area" class="row q-ma-sm">
-      <span class="col-11">{{ comment.nickname }}</span>
-      <q-btn class="col-1" flat round dense icon="close" id="comment-delete" />
+    <div
+      class="row items-center q-mx-sm justify-between"
+      style="font-size: 1em"
+    >
+      <div class="row items-center col-4">
+        <div class="text-black text-bold text-center">{{ comment.name }}</div>
+        <q-btn flat icon="schedule" class="text-grey">
+          {{ comment.createTime }}
+        </q-btn>
+      </div>
+      <q-btn class="col-1" flat round icon="close" id="comment-delete" />
     </div>
-    <div class="q-ma-sm">{{ comment.contents }}</div>
-    <div class="row q-ma-sm">
+    <div class="q-mx-sm" style="font-size: 1.2em; color=black;">
+      {{ comment.content }}
+    </div>
+    <div class="row q-mx-sm">
+      <q-btn flat round icon="thumb_up" class="q-mx-sm" id="comment-thumb-up">{{
+        comment.like[0]
+      }}</q-btn>
       <q-btn
-        v-model="thumb_up"
         flat
         round
-        dense
-        icon="thumb_up"
-        id="comment-thumb-up"
-        >100</q-btn
-      >
-      <q-btn
-        v-model="thumb_down"
-        flat
-        round
-        dense
         icon="thumb_down"
+        class="q-mx-sm"
         id="comment-thumb-down"
-        >0</q-btn
+        >{{ comment.like[1] }}</q-btn
       >
     </div>
   </div>
@@ -36,12 +39,10 @@ export default {
   name: "CommentItem",
   props: ["comment"],
   data: function () {
-    return {
-      thumb_up: 100,
-      thumb_down: 0,
-      nickname: this.params.comment.nickname,
-      contents: this.params.comment.contents,
-    };
+    return {};
+  },
+  created: function () {
+    console.log(this.comment);
   },
 };
 </script>
