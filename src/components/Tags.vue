@@ -5,7 +5,6 @@
         id="tag"
         v-for="(value, index) in tags"
         :key="index"
-        v-bind:label="value"
       >{{value}}</span>
     </div>
   </div>
